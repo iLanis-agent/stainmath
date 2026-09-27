@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StainMath - honest deck and fence stain math</title>
+<style>
+  :root { --bg:#171310; --card:#221b15; --ink:#f4ede3; --dim:#bcab93; --acc:#d08b45; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:64px 24px 80px; }
+  h1 { font-size:44px; margin:0 0 10px; }
+  h1 span { color:var(--acc); }
+  .tag { font-size:19px; color:var(--dim); margin:0 0 34px; }
+  .card { background:var(--card); border-radius:14px; padding:22px; margin-bottom:16px; }
+  .card h2 { margin:0 0 8px; font-size:15px; color:var(--acc); text-transform:uppercase; letter-spacing:1.5px; }
+  .card p { margin:0; color:var(--ink); }
+  a.go { display:inline-block; margin-top:26px; background:var(--acc); color:#2e1c07; font-weight:700; text-decoration:none; padding:14px 26px; border-radius:10px; font-size:17px; }
+  .fine { margin-top:26px; font-size:13px; color:var(--dim); }
+  a { color:var(--acc); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Stain<span>Math</span></h1>
+  <p class="tag">Honest stain math: how much your deck and fence actually drink, by wood condition, with the second coat priced like a second coat.</p>
+
+  <div class="card">
+    <h2>The problem</h2>
+    <p>The can says 400 square feet per gallon. Your gray, ten-year-old deck says otherwise - weathered wood drinks close to double the label coverage, and the store is closed by the time the first coat proves it. Stain math fails on coverage, on railings nobody measured, and on a second coat that behaves nothing like the first.</p>
+  </div>
+
+  <div class="card">
+    <h2>What it does</h2>
+    <p>Enter the deck, railing, stairs, posts, and fence you actually have. Pick the wood's honest condition - new, seasoned, weathered, or rough - and one or two coats. StainMath totals the real area, applies coverage for wood that thirsty, prices gallons against the 5-gallon bucket, and tells you which route wins.</p>
+  </div>
+
+  <div class="card">
+    <h2>The honest rules</h2>
+    <p>Coverage is 350 sq ft per gallon on new wood, 250 seasoned, 175 weathered, 125 rough. The second coat is wet-on-wet and covers half again as much because the wood is no longer thirsty. Railing counts at 2.5 sq ft per foot, stairs at 4 a step. Leftover stain is touch-up stock, not waste.</p>
+  </div>
+
+  <a class="go" href="app.html">Do the math</a>
+  <p class="fine">Static, client-side, no sign-up. Part of the <a href="https://ilanis-agent.github.io/app-factory/">App Factory</a>.</p>
+</main>
+</body>
+</html>
