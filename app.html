@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StainMath - honest deck and fence stain math</title>
+<style>
+  :root { --bg:#171310; --card:#221b15; --ink:#f4ede3; --dim:#bcab93; --acc:#d08b45; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { padding:28px 24px 8px; max-width:980px; margin:0 auto; display:flex; justify-content:space-between; align-items:baseline; }
+  h1 { margin:0; font-size:28px; }
+  h1 span { color:var(--acc); }
+  nav a { color:var(--dim); text-decoration:none; font-size:14px; }
+  main { max-width:980px; margin:0 auto; padding:16px 24px 60px; display:grid; gap:18px; }
+  .card { background:var(--card); border-radius:14px; padding:20px; }
+  .card h2 { margin:0 0 12px; font-size:13px; letter-spacing:1.5px; color:var(--dim); text-transform:uppercase; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px; }
+  label { display:block; font-size:13px; color:var(--dim); margin-bottom:4px; }
+  input, select { width:100%; background:#1b1510; border:1px solid #52432f; color:var(--ink); border-radius:8px; padding:9px 10px; font-size:15px; }
+  .hint { font-size:12.5px; color:var(--dim); margin-top:10px; }
+  button { cursor:pointer; border:0; border-radius:9px; padding:11px 16px; font-size:15px; background:var(--acc); color:#2e1c07; font-weight:600; }
+  button.ghost { background:#41351f; color:var(--ink); font-weight:500; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  .verdict { font-size:17px; line-height:1.65; }
+  .verdict b { color:var(--acc); }
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:16px; }
+  .stat { background:#1b1510; border-radius:10px; padding:12px; }
+  .stat .v { font-size:19px; font-weight:700; color:var(--acc); }
+  .stat .k { font-size:12px; color:var(--dim); margin-top:2px; }
+  .warn { background:#362714; border:1px solid #6e5028; border-radius:10px; padding:12px 14px; margin-top:14px; font-size:14px; color:#f3ddb8; }
+  table.bd { width:100%; border-collapse:collapse; margin-top:6px; font-size:14.5px; }
+  table.bd td { padding:7px 4px; border-bottom:1px solid #3a2f21; }
+  table.bd td:last-child { text-align:right; color:var(--acc); font-weight:600; }
+  .fine { font-size:12.5px; color:var(--dim); margin-top:8px; }
+  a { color:var(--acc); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Stain<span>Math</span></h1>
+  <nav><a href="index.html">about</a></nav>
+</header>
+<main>
+  <section class="card">
+    <h2>The wood</h2>
+    <div class="grid">
+      <div>
+        <label for="dlen">Deck length (ft)</label>
+        <input id="dlen" type="number" min="0" max="60" step="1" value="16">
+      </div>
+      <div>
+        <label for="dwid">Deck width (ft)</label>
+        <input id="dwid" type="number" min="0" max="40" step="1" value="12">
+      </div>
+      <div>
+        <label for="rail">Railing (linear ft)</label>
+        <input id="rail" type="number" min="0" max="200" step="1" value="28">
+      </div>
+      <div>
+        <label for="stairs">Stairs (steps)</label>
+        <input id="stairs" type="number" min="0" max="40" step="1" value="4">
+      </div>
+      <div>
+        <label for="posts">Posts (count)</label>
+        <input id="posts" type="number" min="0" max="40" step="1" value="0">
+      </div>
+    </div>
+    <div class="grid" style="margin-top:14px">
+      <div>
+        <label for="flen">Fence (linear ft)</label>
+        <input id="flen" type="number" min="0" max="500" step="1" value="0">
+      </div>
+      <div>
+        <label for="fhgt">Fence height (ft)</label>
+        <input id="fhgt" type="number" min="0" max="10" step="0.5" value="6">
+      </div>
+      <div>
+        <label for="fsides">Fence sides</label>
+        <select id="fsides">
+          <option value="1">One side only</option>
+          <option value="2">Both sides</option>
+        </select>
+      </div>
+    </div>
+    <p class="hint">Railing counts at 2.5 sq ft per linear foot (rails and balusters, both faces), stairs at 4 sq ft a step, posts at 2 sq ft each. Zero out what you do not have.</p>
+  </section>
+
+  <section class="card">
+    <h2>The stain</h2>
+    <div class="grid">
+      <div>
+        <label for="condition">Wood condition</label>
+        <select id="condition">
+          <option value="newwood">New smooth wood (350 sq ft/gal)</option>
+          <option value="seasoned">Seasoned, good shape (250)</option>
+          <option value="weathered" selected>Weathered / gray (175)</option>
+          <option value="rough">Rough-sawn or badly worn (125)</option>
+        </select>
+      </div>
+      <div>
+        <label for="coats">Coats</label>
+        <select id="coats">
+          <option value="1">One coat</option>
+          <option value="2" selected>Two coats (wet-on-wet)</option>
+        </select>
+      </div>
+      <div>
+        <label for="pgal">$ per gallon</label>
+        <input id="pgal" type="number" min="0" max="150" step="1" value="45">
+      </div>
+      <div>
+        <label for="pbucket">$ per 5-gal bucket (0 = n/a)</label>
+        <input id="pbucket" type="number" min="0" max="500" step="1" value="190">
+      </div>
+    </div>
+    <div class="row">
+      <button id="go">Do the math</button>
+      <button class="ghost" data-preset="deck">Tired deck</button>
+      <button class="ghost" data-preset="fence">Privacy fence</button>
+      <button class="ghost" data-preset="both">Deck + fence weekend</button>
+    </div>
+    <p class="hint">Coverage on the can assumes new smooth wood - weathered wood drinks nearly double. The second coat goes on while the first is still wet and covers about 50% more ground, because the wood is no longer thirsty.</p>
+  </section>
+
+  <section class="card" id="out" hidden>
+    <h2>Your order</h2>
+    <div class="verdict" id="verdict"></div>
+    <div class="stats" id="stats"></div>
+    <div id="warnbox"></div>
+    <table class="bd" id="breakdown"></table>
+    <p class="fine">Material only. Cleaner/brightener, a sprayer or pads, tape, and the plastic for the plants are separate - and none of this works over a dirty deck. The prep day is not optional.</p>
+  </section>
+
+  <section class="card">
+    <h2>What the can will not tell you</h2>
+    <table class="bd">
+      <tr><td>"Up to 400 sq ft per gallon" is new-wood marketing</td><td>gray weathered boards drink like a sponge; plan on half the label number or you will run dry on Sunday afternoon</td></tr>
+      <tr><td>Two thin coats beat one thick one</td><td>a flooded first coat peels by spring; penetrating stain wants to soak in, not sit on top</td></tr>
+      <tr><td>Wet-on-wet is the pro second coat</td><td>the second coat goes on before the first dries - wait a day and the first coat seals the wood against the second</td></tr>
+      <tr><td>More stain is not more protection</td><td>whatever has not soaked in after 30 minutes gets wiped off, or it cures into shiny sticky patches</td></tr>
+      <tr><td>Solid stain is paint in disguise</td><td>it films, it peels, and it means scraping next time; semi-transparent lets the wood be wood</td></tr>
+      <tr><td>Rain wins</td><td>you need 24-48 dry hours after application and a dry deck before it - staining into a forecast is donating the job to the weather</td></tr>
+    </table>
+  </section>
+</main>
+<script src="engine.js"></script>
+<script>
+(function () {
+  function val(id) { return document.getElementById(id).value; }
+  function num(id) { return parseFloat(val(id)) || 0; }
+  function money(x) { return '$' + x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function fmt(x) { return x.toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+
+  function render() {
+    var p = StainMath.plan({
+      deckLengthFt: num('dlen'), deckWidthFt: num('dwid'), railingLf: num('rail'),
+      stairs: num('stairs'), posts: num('posts'),
+      fenceLf: num('flen'), fenceHeightFt: num('fhgt'), fenceSides: parseInt(val('fsides'), 10),
+      condition: val('condition'), coats: parseInt(val('coats'), 10),
+      pricePerGal: num('pgal'), pricePer5Gal: num('pbucket')
+    });
+    if (!(p.area > 0)) { document.getElementById('out').hidden = true; return; }
+
+    var coatBit = p.gal2 > 0 ? ' (' + fmt(p.gal1) + ' + ' + fmt(p.gal2) + ' for the second coat)' : '';
+    document.getElementById('verdict').innerHTML =
+      'Buy <b>' + p.buyGal + ' gallons</b> for ' + fmt(p.totalGal) + ' needed' + coatBit +
+      ' across ' + p.area.toLocaleString('en-US') + ' sq ft. Material total <b>' + money(p.galCost) + '</b>' +
+      (p.buckets > 0 && num('pbucket') > 0 ? ' or <b>' + p.buckets + ' bucket' + (p.buckets === 1 ? '' : 's') + '</b> for ' + money(p.bucketCost) + '.' : '.');
+
+    var stats = [
+      ['Total area', p.area.toLocaleString('en-US') + ' sq ft'],
+      ['Stain needed', fmt(p.totalGal) + ' gal'],
+      ['Buy', p.buyGal + ' gal'],
+      ['Gallon cost', money(p.galCost)],
+      ['Bucket route', num('pbucket') > 0 ? p.buckets + ' x 5 gal = ' + money(p.bucketCost) : 'n/a'],
+      ['Cheaper way', p.cheaper ? p.cheaper : 'n/a']
+    ];
+    document.getElementById('stats').innerHTML = stats.map(function (s) {
+      return '<div class="stat"><div class="v">' + s[1] + '</div><div class="k">' + s[0] + '</div></div>';
+    }).join('');
+
+    var warns = [];
+    if (val('condition') === 'weathered' || val('condition') === 'rough')
+      warns.push('Weathered wood drinks close to double the label coverage. The ' + fmt(p.totalGal) + ' gal above already prices that in - buying the label number would leave you short in the middle of the second coat.');
+    if (p.cheaper === 'bucket')
+      warns.push('The 5-gal bucket wins: ' + money(p.bucketCost) + ' vs ' + money(p.galCost) + ' in gallons. Buckets also guarantee one batch - mixing gallons from two production runs can shift the tone mid-deck.');
+    if (p.buyGal - p.totalGal >= 0.5)
+      warns.push('You finish with about ' + fmt(p.buyGal - p.totalGal) + ' gal left over. Keep it sealed and labeled - that is your touch-up stock for the high-traffic boards in two years.');
+    document.getElementById('warnbox').innerHTML = warns.map(function (w) {
+      return '<div class="warn">' + w + '</div>';
+    }).join('');
+
+    var rows = [];
+    if (p.deckSqFt) rows.push(['Deck floor', p.deckSqFt.toLocaleString('en-US') + ' sq ft']);
+    if (p.railingSqFt) rows.push(['Railing', p.railingSqFt.toLocaleString('en-US') + ' sq ft']);
+    if (p.stairsSqFt) rows.push(['Stairs', p.stairsSqFt.toLocaleString('en-US') + ' sq ft']);
+    if (p.fenceSqFt) rows.push(['Fence', p.fenceSqFt.toLocaleString('en-US') + ' sq ft']);
+    if (p.postsSqFt) rows.push(['Posts', p.postsSqFt.toLocaleString('en-US') + ' sq ft']);
+    rows.push(['Coat 1 (' + fmt(p.gal1) + ' gal)', p.coverage + ' sq ft/gal']);
+    if (p.gal2) rows.push(['Coat 2 (' + fmt(p.gal2) + ' gal)', fmt(p.coverage * 1.5) + ' sq ft/gal']);
+    rows.push(['Material total', money(p.galCost)]);
+    document.getElementById('breakdown').innerHTML = rows.map(function (r) {
+      return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+    }).join('');
+    document.getElementById('out').hidden = false;
+  }
+
+  var presets = {
+    deck: { dlen: 16, dwid: 12, rail: 28, stairs: 4, posts: 0, flen: 0, fhgt: 6, fsides: 1, condition: 'weathered', coats: 2, pgal: 45, pbucket: 190 },
+    fence: { dlen: 0, dwid: 0, rail: 0, stairs: 0, posts: 12, flen: 60, fhgt: 6, fsides: 2, condition: 'rough', coats: 2, pgal: 45, pbucket: 190 },
+    both: { dlen: 20, dwid: 14, rail: 34, stairs: 3, posts: 4, flen: 40, fhgt: 6, fsides: 1, condition: 'weathered', coats: 2, pgal: 48, pbucket: 200 }
+  };
+  function loadPreset(key) {
+    var pr = presets[key];
+    ['dlen', 'dwid', 'rail', 'stairs', 'posts', 'flen', 'fhgt', 'fsides', 'condition', 'coats', 'pgal', 'pbucket'].forEach(function (id) {
+      document.getElementById(id).value = pr[id];
+    });
+    render();
+  }
+
+  document.getElementById('go').addEventListener('click', render);
+  document.querySelectorAll('[data-preset]').forEach(function (b) {
+    b.addEventListener('click', function () { loadPreset(b.getAttribute('data-preset')); });
+  });
+  ['dlen', 'dwid', 'rail', 'stairs', 'posts', 'flen', 'fhgt', 'fsides', 'condition', 'coats', 'pgal', 'pbucket'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', render);
+  });
+
+  loadPreset('deck');
+})();
+</script>
+</body>
+</html>
